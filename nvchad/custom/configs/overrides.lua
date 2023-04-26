@@ -20,6 +20,9 @@ M.treesitter = {
     "php",
     "python"
   },
+  autotag = {
+    enable = true,
+  },
 }
 
 M.nvimtree = {

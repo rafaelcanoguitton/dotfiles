@@ -15,6 +15,7 @@ local servers = {
   "pyright",
   "pylsp",
   "emmet_ls",
+  "svelte",
 }
 
 

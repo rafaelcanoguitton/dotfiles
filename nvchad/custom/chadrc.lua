@@ -2,10 +2,10 @@
 
 local M = {}
 
-M.plugins = require "custom.plugins"
+M.plugins = "custom.plugins"
 
 M.ui = {
-  theme = "decay",
+  theme = "dark_horizon",
   dashboard = true,
   smartindent = false,
 }

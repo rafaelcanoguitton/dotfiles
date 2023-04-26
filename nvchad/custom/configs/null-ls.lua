@@ -26,9 +26,9 @@ local sources = {
   b.formatting.autopep8,
 
   --php
-  b.formatting.phpcbf,
-  b.formatting.phpcsfixer,
-  b.formatting.blade_formatter,
+  -- b.formatting.phpcbf,
+  -- b.formatting.phpcsfixer,
+  -- b.formatting.blade_formatter,
 }
 
 null_ls.setup {
