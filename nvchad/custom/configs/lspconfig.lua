@@ -19,11 +19,11 @@ local servers = {
 }
 
 
-lspconfig.emmet_ls.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  filetypes = { "html", "css", "javascript", "javascriptreact", "typescriptreact", "svelte", "vue" , "blade" }
-}
+-- lspconfig.emmet_ls.setup {
+--   on_attach = on_attach,
+--   capabilities = capabilities,
+--   filetypes = { "html", "css", "javascript", "javascriptreact", "typescriptreact", "svelte", "vue" , "blade" }
+-- }
 
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {

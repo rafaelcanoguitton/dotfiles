@@ -45,29 +45,33 @@ return {
   -- Custom plugins
   {
     "andweeb/presence.nvim",
-    auto_update = true,                     -- Update activity based on autocmd events (if `false`, map or manually execute `:lua package.loaded.presence:update()`)
+    lazy = false,
+    auto_update = true,                       -- Update activity based on autocmd events (if `false`, map or manually execute `:lua package.loaded.presence:update()`)
     neovim_image_text = "The One True Text Editor",
-    log_level = nil,                        -- Log messages at or above this level (one of the following: "debug", "info", "warn", "error")
-    debounce_timeout = 10,                  -- Number of seconds to debounce events (or calls to `:lua package.loaded.presence:update(<filename>, true)`)
-    enable_line_number = false,             -- Displays the current line number instead of the current project
-    blacklist = {},                         -- A list of strings or Lua patterns that disable Rich Presence if the current file name, path, or workspace matches
-    buttons = true,                         -- Configure Rich Presence button(s), either a boolean to enable/disable, a static table (`{{ label = "<label>", url = "<url>" }, ...}`, or a function(buffer: string, repo_url: string|nil): table)
-    file_assets = {},                       -- Custom file asset definitions keyed by file names and extensions (see default config at `lua/presence/file_assets.lua` for reference)
-    show_time = true,                       -- Show the timer
+    log_level = nil,                          -- Log messages at or above this level (one of the following: "debug", "info", "warn", "error")
+    debounce_timeout = 10,                    -- Number of seconds to debounce events (or calls to `:lua package.loaded.presence:update(<filename>, true)`)
+    enable_line_number = false,               -- Displays the current line number instead of the current project
+    blacklist = {},                           -- A list of strings or Lua patterns that disable Rich Presence if the current file name, path, or workspace matches
+    buttons = true,                           -- Configure Rich Presence button(s), either a boolean to enable/disable, a static table (`{{ label = "<label>", url = "<url>" }, ...}`, or a function(buffer: string, repo_url: string|nil): table)
+    file_assets = {},                         -- Custom file asset definitions keyed by file names and extensions (see default config at `lua/presence/file_assets.lua` for reference)
+    show_time = true,                         -- Show the timer
     -- Rich Presence text options
-    editing_text = "Editing %s",            -- Format string rendered when an editable file is loaded in the buffer (either string or function(filename: string): string)
-    file_explorer_text = "Browsing %s",     -- Format string rendered when browsing a file explorer (either string or function(file_explorer_name: string): string)
-    git_commit_text = "Committing changes", -- Format string rendered when committing changes in git (either string or function(filename: string): string)
+    editing_text = "Editing %s",              -- Format string rendered when an editable file is loaded in the buffer (either string or function(filename: string): string)
+    file_explorer_text = "Browsing %s",       -- Format string rendered when browsing a file explorer (either string or function(file_explorer_name: string): string)
+    git_commit_text = "Committing changes",   -- Format string rendered when committing changes in git (either string or function(filename: string): string)
     plugin_manager_text = "Managing plugins", -- Format string rendered when managing plugins (either string or function(plugin_manager_name: string): string)
-    reading_text = "Reading %s",            -- Format string rendered when a read-only or unmodifiable file is loaded in the buffer (either string or function(filename: string): string)
-    workspace_text = "Working on %s",       -- Format string rendered when in a git repository (either string or function(project_name: string|nil, filename: string): string)
+    reading_text = "Reading %s",              -- Format string rendered when a read-only or unmodifiable file is loaded in the buffer (either string or function(filename: string): string)
+    workspace_text = "Working on %s",         -- Format string rendered when in a git repository (either string or function(project_name: string|nil, filename: string): string)
     line_number_text = "Line %s out of %s",
     main_image = "neovim",
   },
 
-  -- ["github/copilot.vim"] = {
+  -- {
+  --   "github/copilot.vim",
   --   branch = "release",
+  --   event = "BufReadPre"
   -- },
+
   {
     "zbirenbaum/copilot.lua",
     event = "InsertEnter",
@@ -121,7 +125,7 @@ return {
           cvs = false,
           ["."] = false,
         },
-        copilot_node_command = "node", -- Node.js version must be > 16.x
+        -- copilot_node_command = "node", -- Node.js version must be > 16.x1
         server_opts_overrides = {},
       })
     end,
@@ -156,9 +160,27 @@ return {
 
   {
     "jwalton512/vim-blade",
+    ft = { "blade" },
   },
 
   {
     "prisma/vim-prisma",
+    ft = { "prisma" },
+  },
+  {
+    "wakatime/vim-wakatime",
+    lazy = false,
+  },
+  {
+    "tpope/vim-fugitive",
+    event = "BufReadPre",
+  },
+  {
+    "junegunn/gv.vim",
+    event = "BufReadPre",
+  },
+  {
+    "lewis6991/gitsigns.nvim",
+    opts = overrides.gitsigns,
   },
 }
