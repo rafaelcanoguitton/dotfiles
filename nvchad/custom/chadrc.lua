@@ -5,7 +5,7 @@ local M = {}
 M.plugins = "custom.plugins"
 
 M.ui = {
-  theme = "tokyodark",
+  theme = "gatekeeper",
   dashboard = true,
   smartindent = false,
 }
