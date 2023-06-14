@@ -1,7 +1,7 @@
 local on_attach = require("plugins.configs.lspconfig").on_attach
 local capabilities = require("plugins.configs.lspconfig").capabilities
 
-local lspconfig = require "lspconfig"
+local lspconfig = require("lspconfig")
 local servers = {
   "html",
   "cssls",
@@ -18,16 +18,25 @@ local servers = {
   "svelte",
 }
 
-
-lspconfig.emmet_ls.setup {
+lspconfig.emmet_ls.setup({
   on_attach = on_attach,
   capabilities = capabilities,
-  filetypes = { "html", "css", "javascript", "javascriptreact", "typescriptreact", "svelte", "vue" , "blade" }
-}
+  filetypes = { "html", "css", "javascript", "javascriptreact", "typescriptreact", "svelte", "vue", "blade" },
+})
+
+lspconfig.pyright.setup({
+  settings = {
+    python = {
+      analysis = {
+        typeCheckingMode = "off",
+      },
+    },
+  },
+})
 
 for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup {
+  lspconfig[lsp].setup({
     on_attach = on_attach,
     capabilities = capabilities,
-  }
+  })
 end
