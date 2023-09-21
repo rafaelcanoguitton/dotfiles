@@ -20,6 +20,7 @@ M.treesitter = {
     "typescript",
     "php",
     "python",
+    "rust",
   },
   autotag = {
     enable = true,
@@ -96,6 +97,7 @@ M.mason = {
     "phpcs",
     "phpmd",
     "blade-formatter",
+    "sonarlint-language-server",
     -- python stuff
     "pyright",
     "autoflake",
@@ -113,6 +115,9 @@ M.mason = {
     --general
     "prettier",
     "prettierd",
+
+    -- rust stuff
+    "rust-analyzer",
   },
 }
 
