@@ -16,6 +16,8 @@ local servers = {
   "pylsp",
   "emmet_ls",
   "svelte",
+  -- rust stuff
+  "rust_analyzer",
 }
 
 lspconfig.emmet_ls.setup({
