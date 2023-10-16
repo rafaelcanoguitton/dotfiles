@@ -35,6 +35,9 @@ local sources = {
 	b.formatting.blade_formatter,
   -- rust
   b.formatting.rustfmt,
+  --go
+  b.formatting.gofumpt,
+  b.formatting.goimports_reviser,
 }
 
 null_ls.setup({

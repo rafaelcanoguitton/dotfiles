@@ -21,6 +21,7 @@ M.treesitter = {
 		"php",
 		"python",
 		"rust",
+    "go",
 	},
 	autotag = {
 		enable = true,
@@ -115,9 +116,14 @@ M.mason = {
 		"prettier",
 		"prettierd",
 
-    --rust stuff
-    "rust-analyzer",
-    "rustfmt",
+		--rust stuff
+		"rust-analyzer",
+		"rustfmt",
+
+		--go stuff
+		"gopls",
+		"goimports-reviser",
+		"gofumpt",
 	},
 }
 

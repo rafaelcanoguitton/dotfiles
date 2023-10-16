@@ -17,6 +17,8 @@ local servers = {
 	"emmet_ls",
 	"svelte",
 	"rust_analyzer",
+	"gopls",
+  "vue-language-server",
 }
 
 lspconfig.emmet_ls.setup({
@@ -30,6 +32,22 @@ lspconfig.pyright.setup({
 		python = {
 			analysis = {
 				typeCheckingMode = "off",
+			},
+		},
+	},
+})
+
+lspconfig.gopls.setup({
+	on_attach = on_attach,
+	capabilities = capabilities,
+	filetypes = { "go", "gomod", "gowork", "gotmpl" },
+  root_dir = lspconfig.util.root_pattern("go.mod", ".git", "go.work"),
+	settings = {
+		gopls = {
+			completeUnimported = true,
+			usePlaceholders = true,
+			analyses = {
+				unusedparams = true,
 			},
 		},
 	},
