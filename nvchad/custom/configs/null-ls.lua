@@ -29,15 +29,16 @@ local sources = {
 	-- b.formatting.phpcbf.with({
 	-- 	extra_args = { "--tab-width=2" },
 	-- }),
-	b.formatting.phpcsfixer.with {
-	  args = { "--no-interaction", "--quiet", "fix", "$FILENAME", "--using-cache=no" },
-	},
+	b.formatting.phpcsfixer.with({
+		args = { "--no-interaction", "--quiet", "fix", "$FILENAME", "--using-cache=no" },
+	}),
 	b.formatting.blade_formatter,
-  -- rust
-  b.formatting.rustfmt,
-  --go
-  b.formatting.gofumpt,
-  b.formatting.goimports_reviser,
+	-- rust
+	b.formatting.rustfmt,
+	--go
+	b.formatting.gofumpt,
+	b.formatting.goimports_reviser,
+	-- vue
 }
 
 null_ls.setup({

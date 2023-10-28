@@ -22,6 +22,7 @@ M.treesitter = {
 		"python",
 		"rust",
     "go",
+    "vue",
 	},
 	autotag = {
 		enable = true,
@@ -124,6 +125,10 @@ M.mason = {
 		"gopls",
 		"goimports-reviser",
 		"gofumpt",
+
+    -- vue stuff
+    "vetur-vls",
+    -- "vls", this was for the v programming language lmao
 	},
 }
 

@@ -16,3 +16,5 @@ end
 
 -- Toggle word wrap
 vim.api.nvim_set_keymap('n', '<Leader>k', ':set wrap!<CR>', { noremap = true, silent = true })
+--lazygit use <leader> plus gg
+vim.api.nvim_set_keymap('n', '<Leader>gg', ':LazyGit<CR>', { noremap = true, silent = true })

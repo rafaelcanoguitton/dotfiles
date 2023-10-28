@@ -18,7 +18,7 @@ local servers = {
 	"svelte",
 	"rust_analyzer",
 	"gopls",
-  "vue-language-server",
+  "vuels",
 }
 
 lspconfig.emmet_ls.setup({
