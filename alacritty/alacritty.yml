@@ -1,0 +1,5 @@
+window:
+  decorations: "none"
+import:
+  # - ~/.config/alacritty/themes/themes/tokyo-night.yaml
+  - ~/.config/alacritty/themes/themes/afterglow.yaml

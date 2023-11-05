@@ -26,6 +26,12 @@ return {
 	{
 		"nvim-treesitter/nvim-treesitter",
 		opts = overrides.treesitter,
+		dependencies = {
+			"JoosepAlviste/nvim-ts-context-commentstring",
+		},
+		-- config = function()
+		-- 	require("ts_context_commentstring").setup({})
+		-- end,
 	},
 	{
 		"nvim-treesitter/playground",
@@ -210,15 +216,33 @@ return {
 		end,
 	},
 	{
-    'kylechui/nvim-surround',
-    config = true,
-    keys = {
-      { 'cs', mode = 'n', desc = 'Change surroundings' },
-      { 'ys', mode = 'n', desc = 'Add surroundings' },
-      { 'ds', mode = 'n', desc = 'Delete surroundings' },
-    },
-  },
+		"kylechui/nvim-surround",
+		config = true,
+		keys = {
+			{ "cs", mode = "n", desc = "Change surroundings" },
+			{ "ys", mode = "n", desc = "Add surroundings" },
+			{ "ds", mode = "n", desc = "Delete surroundings" },
+		},
+	},
 
-  { 'mbbill/undotree', keys = { { '<leader>u', '<cmd>UndotreeToggle<CR>', desc = 'Open undo tree' } } },
-
+	{ "mbbill/undotree", keys = { { "<leader>u", "<cmd>UndotreeToggle<CR>", desc = "Open undo tree" } } },
+	{
+		"numToStr/Comment.nvim",
+		keys = {
+			{ "gcc", mode = "n", desc = "Comment toggle current line" },
+			{ "gc", mode = { "n", "o" }, desc = "Comment toggle linewise" },
+			{ "gc", mode = "x", desc = "Comment toggle linewise (visual)" },
+			{ "gbc", mode = "n", desc = "Comment toggle current block" },
+			{ "gb", mode = { "n", "o" }, desc = "Comment toggle blockwise" },
+			{ "gb", mode = "x", desc = "Comment toggle blockwise (visual)" },
+		},
+		init = function()
+			require("core.utils").load_mappings("comment")
+		end,
+		config = function(_)
+			require("Comment").setup({
+        pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
+      })
+		end,
+	},
 }

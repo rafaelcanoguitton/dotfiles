@@ -35,6 +35,10 @@ M.treesitter = {
 	indent = {
 		enable = true,
 	},
+  context_commentstring = {
+    enable = true,
+    enable_autocmd = false,
+  },
 }
 
 M.nvimtree = {
