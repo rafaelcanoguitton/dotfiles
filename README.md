@@ -2,3 +2,4 @@
 
 cake
 miso soup
+tamales
