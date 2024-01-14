@@ -1,5 +1,19 @@
 window:
   decorations: "none"
+  option_as_alt: Both
 import:
   # - ~/.config/alacritty/themes/themes/tokyo-night.yaml
   - ~/.config/alacritty/themes/themes/afterglow.yaml
+
+
+font:
+  normal:
+    family: FiraCode Nerd Font
+    style: Regular
+
+shell:
+  program: /bin/zsh
+  args:
+    - -l
+    - -c
+    - "tmux attach || tmux"
