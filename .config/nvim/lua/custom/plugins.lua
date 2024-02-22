@@ -241,16 +241,32 @@ return {
 		end,
 		config = function(_)
 			require("Comment").setup({
-        pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
-      })
+				pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
+			})
 		end,
 	},
-  {
-    "edluffy/hologram.nvim",
-    config = function()
-      require("hologram").setup{
-        auto_display = true,
-      }
-    end,
-  }
+	{
+		"edluffy/hologram.nvim",
+		config = function()
+			require("hologram").setup({
+				auto_display = true,
+			})
+		end,
+	},
+	-- custom cmp config
+	{
+		"hrsh7th/nvim-cmp",
+		event = "InsertEnter",
+		dependencies = {
+			{
+				-- snippet plugin
+				"L3MON4D3/LuaSnip",
+				dependencies = "rafamadriz/friendly-snippets",
+				opts = { history = true, updateevents = "TextChanged,TextChangedI" },
+				config = function(_, opts)
+					require("plugins.configs.others").luasnip(opts)
+				end,
+			},
+		},
+	},
 }
