@@ -12,6 +12,7 @@ M.treesitter = {
 		"json",
 		"toml",
 		"markdown",
+    -- "mdx", this we have to enable manually
 		"c",
 		"bash",
 		"lua",
@@ -26,6 +27,9 @@ M.treesitter = {
 	},
 	autotag = {
 		enable = true,
+    enable_rename = true,
+    enable_close = true,
+    enable_close_on_slash = true,
 	},
 	additional_vim_regex_highlighting = true,
 	highlight = {
@@ -133,6 +137,8 @@ M.mason = {
     -- vue stuff
     "vetur-vls",
     -- "vls", this was for the v programming language lmao
+    -- mdx stuff
+    "mdx_analyer"
 	},
 }
 

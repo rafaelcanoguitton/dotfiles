@@ -23,15 +23,28 @@ return {
   -- },
   -- format & linting
   -- override default configs
+  -- {
+  --   "nvim-treesitter/nvim-treesitter",
+  --   opts = overrides.treesitter,
+  --   dependencies = {
+  --     "JoosepAlviste/nvim-ts-context-commentstring",
+  --   },
+  --   -- config = function()
+  --   -- 	require("ts_context_commentstring").setup({})
+  --   -- end,
+  -- },
   {
     "nvim-treesitter/nvim-treesitter",
     opts = overrides.treesitter,
+    config = function(_, opts)
+      dofile(vim.g.base46_cache .. "syntax")
+      require("nvim-treesitter.configs").setup(opts)
+      -- tell treesitter to use the markdown parser for mdx files
+      vim.treesitter.language.register("markdown", "mdx")
+    end,
     dependencies = {
       "JoosepAlviste/nvim-ts-context-commentstring",
     },
-    -- config = function()
-    -- 	require("ts_context_commentstring").setup({})
-    -- end,
   },
   {
     "nvim-treesitter/playground",
@@ -225,7 +238,7 @@ return {
     },
   },
 
-  { "mbbill/undotree", keys = { { "<leader>u", "<cmd>UndotreeToggle<CR>", desc = "Open undo tree" } } },
+  { "mbbill/undotree",   keys = { { "<leader>u", "<cmd>UndotreeToggle<CR>", desc = "Open undo tree" } } },
   {
     "numToStr/Comment.nvim",
     keys = {
@@ -257,16 +270,349 @@ return {
   {
     "hrsh7th/nvim-cmp",
     opts = function()
-      local opts = require "plugins.configs.cmp"
-      local cmp = require "cmp"
+      local opts = require("plugins.configs.cmp")
+      local cmp = require("cmp")
 
       opts.completion = {
         completeopt = "menu,menuone,noselect,noinsert",
       }
 
-      opts.mapping["<CR>"] = cmp.mapping.confirm { select = false }
+      opts.mapping["<CR>"] = cmp.mapping.confirm({ select = false })
 
       return opts
     end,
-  }
+  },
+  -- { for now we'll just try leap
+  --   "smoka7/hop.nvim",
+  --   version = "*",
+  --   opts = {
+  --     keys = "etovxqpdygfblzhckisuran",
+  --   },
+  -- },
+  {
+    "ggandor/leap.nvim",
+    lazy = false,
+    config = function()
+      require("leap").create_default_mappings()
+    end,
+  },
+  {
+    "stevearc/oil.nvim",
+    opts = {},
+    lazy = false,
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+    },
+    config = function()
+      require("oil").setup()
+    end,
+  },
+  {
+    "folke/trouble.nvim",
+    dependencies = "nvim-tree/nvim-web-devicons",
+    opts = { use_diagnostic_signs = true },
+    keys = {
+      {
+        "<leader>xx",
+        function()
+          return require("trouble").toggle()
+        end,
+        desc = "Toggle trouble.nvim",
+      },
+      {
+        "<leader>xw",
+        function()
+          return require("trouble").toggle("workspace_diagnostics")
+        end,
+        desc = "Open workspace diagnostics",
+      },
+      {
+        "<leader>xd",
+        function()
+          return require("trouble").toggle("document_diagnostics")
+        end,
+        desc = "Open document diagnostics",
+      },
+      {
+        "<leader>xq",
+        function()
+          return require("trouble").toggle("quickfix")
+        end,
+        desc = "Open quickfix",
+      },
+      {
+        "<leader>xl",
+        function()
+          return require("trouble").toggle("loclist")
+        end,
+        desc = "Open location list",
+      },
+      {
+        "gR",
+        function()
+          return require("trouble").toggle("lsp_references")
+        end,
+        desc = "References",
+      },
+      {
+        "[q",
+        function()
+          if require("trouble").is_open() then
+            require("trouble").previous({ skip_groups = true, jump = true })
+          else
+            local ok, err = pcall(vim.cmd.cprevious)
+            if not ok then
+              vim.notify(err, vim.log.levels.ERROR)
+            end
+          end
+        end,
+        desc = "Previous trouble/quickfix item",
+      },
+      {
+        "]q",
+        function()
+          if require("trouble").is_open() then
+            require("trouble").next({ skip_groups = true, jump = true })
+          else
+            local ok, err = pcall(vim.cmd.cnext)
+            if not ok then
+              vim.notify(err, vim.log.levels.ERROR)
+            end
+          end
+        end,
+        desc = "Next trouble/quickfix item",
+      },
+      { "<leader>xt", "<cmd>TodoTrouble<CR>",                         desc = "Todo (Trouble)" },
+      { "<leader>xT", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<CR>", desc = "Todo/Fix/Fixme (Trouble)" },
+    },
+  },
+  {
+    "RRethy/vim-illuminate",
+    event = { "BufReadPost", "BufNewFile" },
+    opts = {
+      -- providers = { 'lsp', 'treesitter', 'regex' },
+      large_file_cuttoff = 2000,
+      large_file_overrides = { providers = { "lsp" } },
+    },
+    config = function(_, opts)
+      require("illuminate").configure(opts)
+      local function map(key, dir, buffer)
+        vim.keymap.set("n", key, function()
+          require("illuminate")["goto_" .. dir .. "_reference"](false)
+        end, { desc = dir:sub(1, 1):upper() .. dir:sub(2) .. " Reference", buffer = buffer })
+      end
+      map("]]", "next")
+      map("[[", "prev")
+      -- Set it after loading ftplugins
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function()
+          local buffer = vim.api.nvim_get_current_buf()
+          map("]]", "next", buffer)
+          map("[[", "prev", buffer)
+        end,
+      })
+    end,
+    keys = { { "]]", desc = "Next Reference" }, { "[[", desc = "Prev Reference" } },
+  },
+  {
+    "tzachar/highlight-undo.nvim",
+    keys = { "u", "<C-r>" },
+    config = true,
+  },
+  {
+    "mbbill/undotree",
+    keys = { { "<leader>u", "<cmd>UndotreeToggle<CR>", desc = "Open undo tree" } },
+    config = function()
+      vim.g.undotree_WindowLayout = 2
+      vim.g.undotree_ShortIndicators = 1
+    end,
+  },
+  { "fladson/vim-kitty", ft = "kitty" },
+  {
+    "windwp/nvim-ts-autotag",
+    lazy = false,
+    config = function()
+      require("nvim-ts-autotag").setup()
+    end,
+  },
+  {
+    "monaqa/dial.nvim",
+    keys = {
+      {
+        "<C-a>",
+        function()
+          return require("dial.map").inc_normal()
+        end,
+        expr = true,
+        desc = "Increment",
+      },
+      {
+        "<C-x>",
+        function()
+          return require("dial.map").dec_normal()
+        end,
+        expr = true,
+        desc = "Decrement",
+      },
+      {
+        "g<C-a>",
+        function()
+          return require("dial.map").inc_gnormal()
+        end,
+        expr = true,
+        desc = "Multiline increment",
+      },
+      {
+        "g<C-x>",
+        function()
+          return require("dial.map").dec_gnormal()
+        end,
+        expr = true,
+        desc = "Multiline decrement",
+      },
+      {
+        "<C-a>",
+        function()
+          return require("dial.map").inc_visual()
+        end,
+        mode = "v",
+        expr = true,
+        desc = "Increment",
+      },
+      {
+        "<C-x>",
+        function()
+          return require("dial.map").dec_visual()
+        end,
+        mode = "v",
+        expr = true,
+        desc = "Decrement",
+      },
+      {
+        "g<C-a>",
+        function()
+          return require("dial.map").inc_gvisual()
+        end,
+        mode = "v",
+        expr = true,
+        desc = "Multiline increment",
+      },
+      {
+        "g<C-x>",
+        function()
+          return require("dial.map").dec_gvisual()
+        end,
+        mode = "v",
+        expr = true,
+        desc = "Multiline decrement",
+      },
+    },
+    config = function()
+      local augend = require("dial.augend")
+      require("dial.config").augends:register_group({
+        default = {
+          augend.integer.alias.decimal,
+          augend.integer.alias.decimal_int,
+          augend.integer.alias.hex,
+          augend.integer.alias.octal,
+          augend.integer.alias.binary,
+          augend.constant.alias.bool,
+          augend.constant.alias.alpha,
+          augend.constant.alias.Alpha,
+          augend.constant.new({ elements = { "and", "or" }, word = true, cyclic = true }),
+          augend.constant.new({ elements = { "&&", "||" }, word = false, cyclic = true }),
+          augend.constant.new({
+            elements = {
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+              "Sunday",
+            },
+            word = true,
+            cyclic = true,
+          }),
+          augend.constant.new({
+            elements = {
+              "January",
+              "February",
+              "March",
+              "April",
+              "May",
+              "June",
+              "July",
+              "August",
+              "September",
+              "October",
+              "November",
+              "December",
+            },
+            word = true,
+            cyclic = true,
+          }),
+        },
+      })
+    end,
+  },
+  {
+    "nvim-treesitter/nvim-treesitter-context",
+    dependencies = "nvim-treesitter/nvim-treesitter",
+    event = { "BufReadPost", "BufNewFile" },
+    opts = { max_lines = 3 },
+  },
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    main = "ibl",
+    dependencies = "nvim-treesitter/nvim-treesitter",
+    event = { "BufReadPost", "BufNewFile" },
+    opts = {
+      indent = { char = "│", tab_char = "│" },
+      scope = { enabled = false },
+      exclude = { filetypes = { "lazy", "dashboard", "mason" } },
+    },
+  },
+  {
+    "hiphish/rainbow-delimiters.nvim",
+    dependencies = "nvim-treesitter/nvim-treesitter",
+    event = { "BufReadPost", "BufNewFile" },
+  },
+  {
+    "andymass/vim-matchup",
+    dependencies = "nvim-treesitter/nvim-treesitter",
+    event = { "BufReadPost", "BufNewFile" },
+    config = function()
+      vim.g.matchup_matchparen_offscreen = {}
+      vim.g.matchup_matchparen_deferred = 1
+    end,
+  },
+  {
+    "Wansmer/treesj",
+    dependencies = "nvim-treesitter/nvim-treesitter",
+    opts = { max_join_length = 150 },
+    keys = {
+      {
+        "<leader>m",
+        function()
+          return require("treesj").toggle()
+        end,
+        desc = "Toggle node under cursor",
+      },
+      {
+        "<leader>j",
+        function()
+          return require("treesj").join()
+        end,
+        desc = "Join node under cursor",
+      },
+      {
+        "<leader>s",
+        function()
+          return require("treesj").split()
+        end,
+        desc = "Split node under cursor",
+      },
+    },
+  },
 }

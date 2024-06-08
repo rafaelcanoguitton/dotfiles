@@ -19,6 +19,7 @@ local servers = {
 	"rust_analyzer",
 	"gopls",
   "vuels",
+  "mdx_analyzer"
 }
 
 lspconfig.emmet_ls.setup({
@@ -51,6 +52,12 @@ lspconfig.gopls.setup({
 			},
 		},
 	},
+})
+
+lspconfig.mdx_analyzer.setup({
+  on_attach = on_attach,
+  capabilities = capabilities,
+  filetypes = { "mdx" },
 })
 
 -- lspconfig.sonarlint.setup({
