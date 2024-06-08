@@ -39,10 +39,12 @@ M.treesitter = {
 	indent = {
 		enable = true,
 	},
-  context_commentstring = {
+  -- literally commenting this object because
+  -- the old way is being deprecated
+  -- context_commentstring = {
     enable = true,
     enable_autocmd = false,
-  },
+  -- },
 }
 
 M.nvimtree = {
