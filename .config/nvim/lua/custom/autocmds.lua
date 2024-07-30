@@ -1,6 +1,9 @@
 vim.opt.relativenumber = true
-vim.g.editorconfig = false
+-- vim.g.editorconfig = false
+vim.g.editorconfig = true
 vim.opt.smartindent = true
+-- use 4 as tabsize
+vim.opt.tabstop = 4
 if vim.fn.has("macunix") ~= 1 then
   vim.opt.shell = "/usr/bin/fish"
 end
