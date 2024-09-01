@@ -272,11 +272,14 @@ return {
     opts = function()
       local opts = require("plugins.configs.cmp")
       local cmp = require("cmp")
+      local opts = require("plugins.configs.cmp")
+      local cmp = require("cmp")
 
       opts.completion = {
         completeopt = "menu,menuone,noselect,noinsert",
       }
 
+      opts.mapping["<CR>"] = cmp.mapping.confirm({ select = false })
       opts.mapping["<CR>"] = cmp.mapping.confirm({ select = false })
 
       return opts
