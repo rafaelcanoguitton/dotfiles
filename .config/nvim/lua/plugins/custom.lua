@@ -684,4 +684,16 @@ return {
       },
     },
   },
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    opts = {},
+    dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.nvim" },
+    -- we'll run the setup here and only open for markdown files
+    config = function()
+      require("render_markdown").setup {
+        filetypes = { "markdown" },
+      }
+    end,
+    event = { "BufReadPost", "BufNewFile" },
+  },
 }
