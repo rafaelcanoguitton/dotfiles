@@ -21,7 +21,7 @@ local servers = {
   "rust_analyzer",
   "gopls",
   "vuels",
-  "prisma"
+  "prismals"
 }
 local nvlsp = require "nvchad.configs.lspconfig"
 

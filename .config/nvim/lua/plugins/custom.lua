@@ -22,9 +22,9 @@ return {
         "go",
         "vue",
       },
-      autotag = {
-        enable = true,
-      },
+      -- autotag = {
+      --   enable = true,
+      -- },
       additional_vim_regex_highlighting = true,
       highlight = {
         enable = true,
@@ -42,6 +42,9 @@ return {
     -- config = function()
     -- 	require("ts_context_commentstring").setup({})
     -- end,
+    config = function()
+      require("nvim-ts-autotag").setup()
+    end,
   },
   {
     "nvim-treesitter/playground",
@@ -274,12 +277,12 @@ return {
     "lewis6991/gitsigns.nvim",
     opts = {
       signs = {
-        add = { hl = "DiffAdd", text = "│", numhl = "GitSignsAddNr" },
-        change = { hl = "DiffChange", text = "│", numhl = "GitSignsChangeNr" },
-        delete = { hl = "DiffDelete", text = "", numhl = "GitSignsDeleteNr" },
-        topdelete = { hl = "DiffDelete", text = "‾", numhl = "GitSignsDeleteNr" },
-        changedelete = { hl = "DiffChangeDelete", text = "~", numhl = "GitSignsChangeNr" },
-        untracked = { hl = "GitSignsAdd", text = "│", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn" },
+        add = { text = "│" },
+        change = { text = "│" },
+        delete = { text = "" },
+        topdelete = { text = "‾" },
+        changedelete = { text = "~" },
+        untracked = { text = "│" },
       },
       on_attach = function(bufnr)
         -- utils.load_mappings("gitsigns", { buffer = bufnr })
