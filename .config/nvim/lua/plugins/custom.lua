@@ -690,10 +690,15 @@ return {
     dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.nvim" },
     -- we'll run the setup here and only open for markdown files
     config = function()
-      require("render_markdown").setup {
+      require("render-markdown").setup {
         filetypes = { "markdown" },
       }
     end,
     event = { "BufReadPost", "BufNewFile" },
+  },
+  {
+    -- we'll always load this one
+    "numToStr/prettierrc.nvim",
+    event = { "BufReadPre"}
   },
 }

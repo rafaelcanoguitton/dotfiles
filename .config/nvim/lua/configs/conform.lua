@@ -10,6 +10,7 @@ local options = {
     blade = { "blade-formatter " },
     rust = { "rustfmt" },
     go = { "gofumpt", "goimports-reviser" },
+    typescript = { "prettierd", "prettier" },
   },
 
   -- format_on_save = {
