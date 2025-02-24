@@ -1,49 +1,81 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
-    opts = {
-      ensure_installed = {
-        "vim",
-        "html",
-        "css",
-        "javascript",
-        "json",
-        "toml",
-        "markdown",
-        "c",
-        "bash",
-        "lua",
-        "norg",
-        "tsx",
-        "typescript",
-        "php",
-        "python",
-        "rust",
-        "go",
-        "vue",
-      },
-      -- autotag = {
-      --   enable = true,
-      -- },
-      additional_vim_regex_highlighting = true,
-      highlight = {
-        enable = true,
-        use_languagetree = true,
-      },
-      indent = {
-        enable = true,
-      },
-      enable = true,
-      enable_autocmd = false,
-    },
+    build = ":TSUpdate",
+    config = function()
+      require("nvim-treesitter.configs").setup {
+        ensure_installed = {
+          "vim",
+          "html",
+          "css",
+          "javascript",
+          "json",
+          "toml",
+          "markdown",
+          "c",
+          "bash",
+          "lua",
+          "norg",
+          "tsx",
+          "typescript",
+          "php",
+          "python",
+          "rust",
+          "go",
+          "vue",
+        },
+        highlight = {
+          enable = true,
+          additional_vim_regex_highlighting = false,
+        },
+        indent = {
+          enable = true,
+        },
+      }
+      require("nvim-ts-autotag").setup()
+    end,
     dependencies = {
       "JoosepAlviste/nvim-ts-context-commentstring",
+      "windwp/nvim-ts-autotag",
     },
-    -- config = function()
-    -- 	require("ts_context_commentstring").setup({})
-    -- end,
+  },
+  {
+    "nvim-telescope/telescope.nvim",
+    opts = {
+      extensions_list = { "fzf", "terms", "nerdy", "media" },
+
+      extensions = {
+        media = {
+          backend = "ueberzug",
+        },
+      },
+    },
+
+    dependencies = {
+      { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+      "2kabhishek/nerdy.nvim",
+      "dharmx/telescope-media.nvim",
+    },
     config = function()
-      require("nvim-ts-autotag").setup()
+      local telescope = require "telescope"
+      telescope.setup {
+        pickers = {
+          live_grep = {
+            file_ignore_patterns = { ".git", ".venv" },
+            additional_args = function(_)
+              return { "--hidden" }
+            end,
+          },
+          find_files = {
+            file_ignore_patterns = { "node_modules", ".git", ".venv" },
+            hidden = true,
+          },
+        },
+        extensions = {
+          "fzf",
+        },
+      }
+      telescope.load_extension "fzf"
     end,
   },
   {
@@ -114,6 +146,9 @@ return {
         -- vue stuff
         "vetur-vls",
         -- "vls", this was for the v programming language lmao
+        -- eslint stuff
+        "eslint_d",
+        "eslint-lsp",
       },
     },
   },
@@ -141,11 +176,10 @@ return {
     line_number_text = "Line %s out of %s",
     main_image = "neovim",
   },
-
   -- {
   --   "github/copilot.vim",
   --   branch = "release",
-  --   event = "BufReadPre"
+  --   event = "BufReadPre",
   -- },
 
   {
@@ -206,7 +240,6 @@ return {
       }
     end,
   },
-
   {
     "iamcco/markdown-preview.nvim",
     ft = { "markdown" },
@@ -220,9 +253,6 @@ return {
       require("todo-comments").setup {}
     end,
   },
-
-  -- ["neoclide/coc.nvim"] = { branch = "release" },
-
   {
     "folke/persistence.nvim",
     event = "BufReadPre",
@@ -378,81 +408,39 @@ return {
   },
   {
     "folke/trouble.nvim",
-    dependencies = "nvim-tree/nvim-web-devicons",
-    opts = { use_diagnostic_signs = true },
+    opts = {}, -- for default options, refer to the configuration section for custom setup.
+    cmd = "Trouble",
     keys = {
       {
         "<leader>xx",
-        function()
-          return require("trouble").toggle()
-        end,
-        desc = "Toggle trouble.nvim",
+        "<cmd>Trouble diagnostics toggle<cr>",
+        desc = "Diagnostics (Trouble)",
       },
       {
-        "<leader>xw",
-        function()
-          return require("trouble").toggle "workspace_diagnostics"
-        end,
-        desc = "Open workspace diagnostics",
+        "<leader>xX",
+        "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+        desc = "Buffer Diagnostics (Trouble)",
       },
       {
-        "<leader>xd",
-        function()
-          return require("trouble").toggle "document_diagnostics"
-        end,
-        desc = "Open document diagnostics",
+        "<leader>cs",
+        "<cmd>Trouble symbols toggle focus=false<cr>",
+        desc = "Symbols (Trouble)",
       },
       {
-        "<leader>xq",
-        function()
-          return require("trouble").toggle "quickfix"
-        end,
-        desc = "Open quickfix",
+        "<leader>cl",
+        "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+        desc = "LSP Definitions / references / ... (Trouble)",
       },
       {
-        "<leader>xl",
-        function()
-          return require("trouble").toggle "loclist"
-        end,
-        desc = "Open location list",
+        "<leader>xL",
+        "<cmd>Trouble loclist toggle<cr>",
+        desc = "Location List (Trouble)",
       },
       {
-        "gR",
-        function()
-          return require("trouble").toggle "lsp_references"
-        end,
-        desc = "References",
+        "<leader>xQ",
+        "<cmd>Trouble qflist toggle<cr>",
+        desc = "Quickfix List (Trouble)",
       },
-      {
-        "[q",
-        function()
-          if require("trouble").is_open() then
-            require("trouble").previous { skip_groups = true, jump = true }
-          else
-            local ok, err = pcall(vim.cmd.cprevious)
-            if not ok then
-              vim.notify(err, vim.log.levels.ERROR)
-            end
-          end
-        end,
-        desc = "Previous trouble/quickfix item",
-      },
-      {
-        "]q",
-        function()
-          if require("trouble").is_open() then
-            require("trouble").next { skip_groups = true, jump = true }
-          else
-            local ok, err = pcall(vim.cmd.cnext)
-            if not ok then
-              vim.notify(err, vim.log.levels.ERROR)
-            end
-          end
-        end,
-        desc = "Next trouble/quickfix item",
-      },
-      { "<leader>xt", "<cmd>TodoTrouble<CR>", desc = "Todo (Trouble)" },
-      { "<leader>xT", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<CR>", desc = "Todo/Fix/Fixme (Trouble)" },
     },
   },
   {
@@ -684,21 +672,94 @@ return {
       },
     },
   },
-  {
-    "MeanderingProgrammer/render-markdown.nvim",
-    opts = {},
-    dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.nvim" },
-    -- we'll run the setup here and only open for markdown files
-    config = function()
-      require("render-markdown").setup {
-        filetypes = { "markdown" },
-      }
-    end,
-    event = { "BufReadPost", "BufNewFile" },
-  },
+  -- {
+  --   "MeanderingProgrammer/render-markdown.nvim",
+  --   opts = {},
+  --   dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.nvim" },
+  --   -- we'll run the setup here and only open for markdown files
+  --   config = function()
+  --     require("render-markdown").setup {
+  --       filetypes = { "markdown" },
+  --     }
+  --   end,
+  --   event = { "BufReadPost", "BufNewFile" },
+  -- },
   {
     -- we'll always load this one
     "numToStr/prettierrc.nvim",
-    event = { "BufReadPre"}
+    event = { "BufReadPre" },
+  },
+  -- to use when copilot free tier quota gets surpassed
+  -- {
+  --   "supermaven-inc/supermaven-nvim",
+  --   event = "VeryLazy",
+  --   config = function()
+  --     require("supermaven-nvim").setup {
+  --       keymaps = {
+  --         accept_suggestion = "<A-l>",
+  --         clear_suggestion = "<C-]>",
+  --         accept_word = "<C-j>",
+  --       },
+  --     }
+  --   end,
+  -- },
+  {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    opts = {
+      lsp = {
+        signature = {
+          enabled = false,
+        },
+        override = {
+          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+          ["vim.lsp.util.stylize_markdown"] = true,
+        },
+      },
+      presets = {
+        bottom_search = true,
+        command_palette = true,
+        long_message_to_split = true,
+        inc_rename = false,
+        lsp_doc_border = false,
+      },
+      cmdline = {
+        view = "cmdline_popup",
+        opts = {
+          position = {
+            row = "50%",
+            col = "50%",
+          },
+          size = {
+            width = 60,
+            height = 3,
+          },
+        },
+      },
+      routes = {
+        {
+          view = "notify", -- Use 'notify' for notifications
+          filter = { event = "msg_showmode" }, -- Filter for showmode messages
+        },
+      },
+    },
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "rcarriga/nvim-notify",
+    },
+  },
+  {
+    "kawre/leetcode.nvim",
+    build = ":TSUpdate html", -- if you have `nvim-treesitter` installed
+    event = "VeryLazy",
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+      -- "ibhagwan/fzf-lua",
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+    },
+    opts = {
+      -- configuration goes here
+    },
   },
 }

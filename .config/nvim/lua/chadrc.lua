@@ -5,7 +5,7 @@
 local M = {}
 
 M.base46 = {
-	theme = "vscode_dark",
+	theme = "onedark",
   dashboard = true,
   smartindent = false,
 	-- hl_override = {

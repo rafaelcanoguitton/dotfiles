@@ -69,3 +69,20 @@ end
 vim.api.nvim_set_keymap("n", "<Leader>k", ":set wrap!<CR>", { noremap = true, silent = true })
 --lazygit use <leader> plus gg
 vim.api.nvim_set_keymap("n", "<Leader>gg", ":LazyGit<CR>", { noremap = true, silent = true })
+-- autoload/autoread
+vim.opt.autoread = true
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
+  callback = function()
+    vim.cmd "checktime"
+  end,
+})
+
+-- to prevent the float window from getting focused
+-- didn't work
+-- vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
+--   vim.lsp.handlers.signature_help, {
+--     border = "rounded",
+--     focus = false,  -- This prevents the float window from taking focus
+--     close_events = { "CursorMoved", "BufHidden", "InsertCharPre" }
+--   }
+-- )

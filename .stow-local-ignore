@@ -2,3 +2,4 @@
 install.sh
 README.md
 .config/nvim_bk
+.config/starship.toml

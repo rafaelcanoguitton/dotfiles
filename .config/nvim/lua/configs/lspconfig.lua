@@ -9,7 +9,8 @@ local servers = {
   "cssls",
   "clangd",
   "jsonls",
-  "tsserver",
+  -- "tsserver",-- deprecated
+  "ts_ls",
   "tailwindcss",
   "bashls",
   "marksman",
@@ -21,7 +22,8 @@ local servers = {
   "rust_analyzer",
   "gopls",
   "vuels",
-  "prismals"
+  "prismals",
+  "eslint",
 }
 local nvlsp = require "nvchad.configs.lspconfig"
 
