@@ -1,4 +1,32 @@
 return {
+  { import = "nvchad.blink.lazyspec" },
+  {
+    "Saghen/blink.cmp",
+    dependencies = {
+      {
+        "giuxtaposition/blink-cmp-copilot",
+      },
+    },
+    opts = {
+      completion = { list = { selection = { preselect = false, auto_insert = false } } },
+      keymap = {
+        preset = "default",
+        ["<Tab>"] = { "select_next", "fallback" },
+        ["<S-Tab>"] = { "select_prev", "fallback" },
+      },
+      sources = {
+        default = { "lsp", "path", "snippets", "buffer", "copilot" },
+        providers = {
+          copilot = {
+            name = "copilot",
+            module = "blink-cmp-copilot",
+            score_offset = 100,
+            async = true,
+          },
+        },
+      },
+    },
+  },
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
@@ -117,7 +145,7 @@ return {
         "phpmd",
         "blade-formatter",
         -- python stuff
-        "pyright",
+        -- "pyright",
         "autoflake",
         "autopep8",
         "black",
@@ -185,19 +213,19 @@ return {
   {
     "zbirenbaum/copilot.lua",
     event = "InsertEnter",
-    dependencies = {
-      {
-        "zbirenbaum/copilot-cmp",
-        after = { "copilot.lua" },
-        config = function()
-          require("copilot_cmp").setup()
-        end,
-      },
-    },
+    -- dependencies = {
+    --   {
+    --     "zbirenbaum/copilot-cmp",
+    --     after = { "copilot.lua" },
+    --     config = function()
+    --       require("copilot_cmp").setup()
+    --     end,
+    --   },
+    -- },
     config = function()
       require("copilot").setup {
         panel = {
-          enabled = true,
+          enabled = false,
           auto_refresh = true,
           keymap = {
             jump_prev = "[[",
@@ -212,7 +240,7 @@ return {
           },
         },
         suggestion = {
-          enabled = true,
+          enabled = false,
           auto_trigger = true,
           debounce = 75,
           keymap = {
@@ -292,10 +320,6 @@ return {
     ft = { "prisma" },
   },
   {
-    "wakatime/vim-wakatime",
-    lazy = false,
-  },
-  {
     "tpope/vim-fugitive",
     event = "BufReadPre",
   },
@@ -373,21 +397,21 @@ return {
     end,
   },
   -- custom cmp config
-  {
-    "hrsh7th/nvim-cmp",
-    opts = function()
-      local opts = require "nvchad.configs.cmp"
-      local cmp = require "cmp"
-
-      opts.completion = {
-        completeopt = "menu,menuone,noselect,noinsert",
-      }
-
-      opts.mapping["<CR>"] = cmp.mapping.confirm { select = false }
-
-      return opts
-    end,
-  },
+  -- {
+  --   "hrsh7th/nvim-cmp",
+  --   opts = function()
+  --     local opts = require "nvchad.configs.cmp"
+  --     local cmp = require "cmp"
+  --
+  --     opts.completion = {
+  --       completeopt = "menu,menuone,noselect,noinsert",
+  --     }
+  --
+  --     opts.mapping["<CR>"] = cmp.mapping.confirm { select = false }
+  --
+  --     return opts
+  --   end,
+  -- },
   {
     "ggandor/leap.nvim",
     lazy = false,

@@ -15,7 +15,7 @@ local servers = {
   "bashls",
   "marksman",
   "intelephense",
-  "pyright",
+  -- "pyright",
   "pylsp",
   "emmet_ls",
   "svelte",
@@ -36,38 +36,37 @@ for _, lsp in ipairs(servers) do
   }
 end
 
-lspconfig.emmet_ls.setup({
-	on_attach = nvlsp.on_attach,
-	capabilities = nvlsp.capabilities,
-	filetypes = { "html", "css", "javascript", "javascriptreact", "typescriptreact", "svelte", "vue", "blade" },
-})
+lspconfig.emmet_ls.setup {
+  on_attach = nvlsp.on_attach,
+  capabilities = nvlsp.capabilities,
+  filetypes = { "html", "css", "javascript", "javascriptreact", "typescriptreact", "svelte", "vue", "blade" },
+}
 
-lspconfig.pyright.setup({
-	settings = {
-		python = {
-			analysis = {
-				typeCheckingMode = "off",
-			},
-		},
-	},
-})
+-- lspconfig.pyright.setup({
+-- 	settings = {
+-- 		python = {
+-- 			analysis = {
+-- 				typeCheckingMode = "off",
+-- 			},
+-- 		},
+-- 	},
+-- })
 
-lspconfig.gopls.setup({
-	on_attach = nvlsp.on_attach,
-	capabilities = nvlsp.capabilities,
-	filetypes = { "go", "gomod", "gowork", "gotmpl" },
+lspconfig.gopls.setup {
+  on_attach = nvlsp.on_attach,
+  capabilities = nvlsp.capabilities,
+  filetypes = { "go", "gomod", "gowork", "gotmpl" },
   root_dir = lspconfig.util.root_pattern("go.mod", ".git", "go.work"),
-	settings = {
-		gopls = {
-			completeUnimported = true,
-			usePlaceholders = true,
-			analyses = {
-				unusedparams = true,
-			},
-		},
-	},
-})
-
+  settings = {
+    gopls = {
+      completeUnimported = true,
+      usePlaceholders = true,
+      analyses = {
+        unusedparams = true,
+      },
+    },
+  },
+}
 
 -- configuring single server, example: typescript
 -- lspconfig.tsserver.setup {
